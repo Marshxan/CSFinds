@@ -1,0 +1,35 @@
+{
+  "name": "kfinds",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "scrape": "node scraper/scrape.js",
+    "login": "node scraper/kakobuy-login.js",
+    "prices": "node scraper/kakobuy-price.js",
+    "images": "node scraper/download-images.js",
+    "all": "node scraper/run-all.js",
+    "admin": "node admin/server.js",
+    "verify": "node scraper/verify-links.js",
+    "test-prices": "node scraper/kakobuy-price.js --selftest",
+    "rebrand": "node scraper/rebrand.js",
+    "categorize": "node scraper/categorize.js --names",
+    "clean-names": "node scraper/clean-names.js",
+    "import": "node scraper/import-links.js",
+    "smart-names": "node scraper/smart-names.js",
+    "optimize-images": "node scraper/optimize-images.js",
+    "build": "node scraper/build-client-data.js",
+    "check-links": "node scraper/check-live-links.js",
+    "apply-links": "node scraper/apply-link-status.js",
+    "fix-brands": "node scraper/fix-brand-field.js",
+    "fill-brands": "node scraper/brand-from-seller.js",
+    "deploy-filter": "node scraper/build-deploy-image-filter.js",
+    "build-dist": "node scraper/build-dist.js",
+    "deploy": "node scraper/build-dist.js && npx wrangler pages deploy dist --project-name kfinds"
+  },
+  "dependencies": {
+    "@imgly/background-removal-node": "^1.4.5",
+    "playwright": "^1.62.1",
+    "sharp": "^0.35.3"
+  }
+}
