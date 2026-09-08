@@ -392,6 +392,12 @@ async def main():
     Daca totusi pica de tot, iesim cu cod 1 si start-bot.bat reporneste procesul
     (un client discord.py inchis nu poate fi refolosit)."""
     try:
+        import db
+        db.init_schema()
+    except Exception as e:
+        log.critical(f"[FATAL] Nu m-am putut conecta la MariaDB: {e}")
+        sys.exit(4)
+    try:
         async with client:
             await client.start(TOKEN, reconnect=True)
     except discord.LoginFailure:
