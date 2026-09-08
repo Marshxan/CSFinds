@@ -1,5 +1,11 @@
 discord.py>=2.3.2
 python-dotenv>=1.0.0
 mysql-connector-python>=8.3.0
-
+Pillow>=10.0.0
+rembg[cpu]>=2.0.50
+numpy>=1.24.0
+scipy>=1.11.0
+scikit-image>=0.22.0
+ 
 aiohttp>=3.9.0
+ 
