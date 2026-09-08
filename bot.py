@@ -18,7 +18,7 @@ except ImportError:
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 WELCOME_CHANNEL_ID = int(os.getenv("WELCOME_CHANNEL_ID", "1543777272400580608"))
-LOGO_PATH = BASE_DIR / os.getenv("WELCOME_IMAGE", "logo-lung.png")
+LOGO_PATH = BASE_DIR / "assets" / "logos" / os.getenv("WELCOME_IMAGE", "logo-lung.png")
 OWNER_ROLE_ID = int(os.getenv("OWNER_ROLE_ID", "1543695086037237841"))
 
 # ---------- Single instance lock ----------

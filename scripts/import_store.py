@@ -14,6 +14,11 @@ butoanele de agenti, adica tocmai rostul postarii.
 import re
 import sys
 import time
+from pathlib import Path
+
+# Scriptul e in scripts/, dar modulele importate sunt in radacina proiectului.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 
 def spune(text: str):
     """Consola Windows e pe cp1252 si crapa pe nume chinezesti; le inlocuim."""

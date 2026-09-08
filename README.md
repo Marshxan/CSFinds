@@ -83,34 +83,56 @@ poate face si din Discord: `.posts`, `.drafts`, `.bulk`, `.fixbg`.
 - `.qc <link>` - pozele QC de pe pagina produsului
 - `.fixbg` - reface pozele taiate prost (`all` = tot, cu modelul bun)
 
-## Datele (si mutarea lor pe baza de date)
+## Datele (acum in MariaDB, nu in JSON)
 
-`posts.json`, `drafts.json` si `links.json` sunt in arhiva, cu datele reale -
-ai de unde migra si de pe ce testa.
+Botul salveaza acum in MariaDB, nu in fisiere JSON. `data/posts.json`,
+`data/drafts.json` si `data/links.json` raman doar ca backup/istoric al
+datelor vechi si ca sursa pentru `scripts/migrate_json_to_db.py`.
 
-Tot cititul si scrisul trec prin trei module, deci baza de date se schimba
+Tot cititul si scrisul trec prin doua module, deci baza de date se schimba
 acolo si nimic altceva nu se atinge:
 
 | Fisier | Ce tine | Functiile publice |
 |---|---|---|
-| `jsonstore.py` | citit/scris atomic + rotatie de backupuri | `read`, `write` |
-| `poststore.py` | postarile si drafturile | `all_posts`, `get`, `save`, `remove`, `all_drafts`, `get_draft`, `save_draft`, `remove_draft` |
-| `linkstore.py` | evidenta produselor vazute (poze, preturi, ce s-a postat) | `get`, `record`, `posted_before` |
+| `db.py` | pool de conexiuni MariaDB + creeaza schema la pornire | `get_conn`, `init_schema` |
+| `poststore.py` | postarile si drafturile (tabelele `posts`, `drafts`) | `all_posts`, `get`, `save`, `remove`, `all_drafts`, `get_draft`, `save_draft`, `remove_draft` |
+| `linkstore.py` | evidenta produselor vazute (tabelele `links`, `link_images`, `link_agent_links`, `link_posts`) | `get`, `record`, `record_post`, `posted_before`, `all_links` |
 
-`poststore` si `linkstore` folosesc `jsonstore` doar prin `read`/`write`, deci
-cel mai ieftin drum e sa rescrii `jsonstore.py` peste tabelul tau si sa lasi
-restul neatins. Cheile sunt: postare = `thread_id` (int, id-ul threadului de
-Discord), draft = `id` (`platform-item_id`), link = `platform` + `item_id`.
+`jsonstore.py` a ramas in proiect neschimbat, dar nu mai e folosit de
+`poststore`/`linkstore` - il poti sterge daca nu-l mai foloseste nimic altceva.
+
+Config-ul de baza de date vine din `.env`: `DB_HOST`, `DB_PORT`, `DB_NAME`,
+`DB_USER`, `DB_PASSWORD`. Schema se creeaza singura la pornirea botului
+(`db.init_schema()`), sau manual cu `data/schema.sql`.
+
+Pentru migrarea datelor vechi din JSON:
+```
+python scripts/migrate_json_to_db.py
+```
 
 Atentie la un lucru: `poststore.save` e apelat si din event loop-ul botului, si
-din panoul web, in acelasi proces - pastreaza scrierea atomica sau pune un lock,
-altfel se pierd randuri la doua salvari deodata.
+din panoul web, in acelasi proces - de-asta fiecare functie tine un
+`threading.Lock` in jurul conexiunii la baza de date.
+
+## Structura proiectului
+
+```
+bot.py, addcmd.py, editcmd.py, ...   - codul botului (comenzi, radacina proiectului)
+db.py, poststore.py, linkstore.py    - stratul de date (MariaDB)
+webpanel.py                          - panoul web
+scraper/                             - scraper Node.js pentru Kakobuy
+assets/logos/                        - logo-urile marcilor si al botului
+assets/emojis/                       - emoji-uri custom + emojis.json
+data/                                - JSON-urile vechi (backup) + schema.sql
+scripts/                             - unelte de rulat manual (migrare, seed, import Yupoo)
+```
 
 ## Ce e in arhiva
 
-Tot ce trebuie ca sa mearga din prima: codul, datele (`posts.json`,
-`drafts.json`, `links.json`), `.env` cu tokenul completat si sesiunea Kakobuy
-a lui Kevin (`scraper/.kakobuy-session.json`), deci nu mai e nevoie de login.
+Tot ce trebuie ca sa mearga din prima: codul, datele vechi
+(`data/posts.json`, `data/drafts.json`, `data/links.json`), `.env` cu tokenul
+completat si sesiunea Kakobuy a lui Kevin (`scraper/.kakobuy-session.json`),
+deci nu mai e nevoie de login.
 
 Cele doua fisiere cu chei - `.env` si `scraper/.kakobuy-session.json` - sunt
 credentialele lui Kevin. Nu ajung in git (`.gitignore` le sare deja) si nu se

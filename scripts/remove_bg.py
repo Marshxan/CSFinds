@@ -26,6 +26,7 @@ from urllib.parse import urlparse
 from PIL import Image
 
 BASE_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = BASE_DIR.parent      # scripts/ e un subfolder al proiectului
 URLS_FILE = BASE_DIR / "urls.txt"
 
 args = sys.argv[1:]
@@ -35,7 +36,7 @@ url_args = [a for a in args if a.split("=", 1)[-1].startswith("http")]
 dir_args = [a for a in args if a not in url_args]
 
 IN_DIR = Path(dir_args[0]) if len(dir_args) > 0 else BASE_DIR / "logos-in"
-OUT_DIR = Path(dir_args[1]) if len(dir_args) > 1 else BASE_DIR / "emojis"
+OUT_DIR = Path(dir_args[1]) if len(dir_args) > 1 else PROJECT_DIR / "assets" / "emojis"
 
 # Yupoo & co. blocheaza hotlinking-ul daca nu pari un browser.
 HEADERS = {

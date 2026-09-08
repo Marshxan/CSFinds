@@ -32,8 +32,8 @@ DOPPEL_REF = os.getenv("DOPPEL_REF", "wHQx8Gp_")
 
 # Emoji custom pentru butoane. Se completeaza automat cu .setupemojis
 # (uploadeaza pozele din folderul emojis/ ca emoji pe server).
-EMOJI_DIR = Path(__file__).resolve().parent / "emojis"
-EMOJI_FILE = Path(__file__).resolve().parent / "emojis.json"
+EMOJI_DIR = Path(__file__).resolve().parent / "assets" / "emojis"
+EMOJI_FILE = Path(__file__).resolve().parent / "assets" / "emojis" / "emojis.json"
 
 
 def load_emojis() -> dict:

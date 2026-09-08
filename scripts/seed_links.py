@@ -13,6 +13,10 @@ Ruleaza o singura data:
 Nu cere reteaua: foloseste doar ce e salvat in posts.json.
 """
 import sys
+from pathlib import Path
+
+# Scriptul e in scripts/, dar linkstore/poststore sunt in radacina proiectului.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import linkstore
 import poststore

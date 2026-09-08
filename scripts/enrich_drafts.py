@@ -14,6 +14,10 @@ pretul din Yupoo, nu ramane gol.
 """
 import sys
 import time
+from pathlib import Path
+
+# Scriptul e in scripts/, dar modulele importate sunt in radacina proiectului.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import imagecmd
 import poststore

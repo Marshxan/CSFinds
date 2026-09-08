@@ -20,7 +20,7 @@ from PIL import Image
 
 BASE_DIR = Path(__file__).resolve().parent
 
-LOGO_PATH = BASE_DIR / "logo-lung.png"
+LOGO_PATH = BASE_DIR / "assets" / "logos" / "logo-lung.png"
 EXTS = (".png", ".jpg", ".jpeg", ".webp", ".bmp")
 
 # --- Layout (proportii luate din modelul de referinta) ---

@@ -13,13 +13,18 @@ import json
 import sys
 from pathlib import Path
 
+# Scriptul e in scripts/, dar db.py si restul modulelor sunt in radacina
+# proiectului - il adaugam in sys.path ca sa poata fi importat de aici.
+PROJECT_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_DIR))
+
 import db
 
-BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = PROJECT_DIR / "data"
 
 
 def load(name):
-    path = BASE_DIR / name
+    path = DATA_DIR / name
     if not path.exists():
         print(f"[!] {name} nu exista, sar peste.")
         return {}

@@ -11,6 +11,9 @@ import threading
 import traceback
 from pathlib import Path
 
+# Scriptul e in scripts/, dar modulele importate sunt in radacina proiectului.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import tkinter as tk
 from tkinter import filedialog, ttk
 
